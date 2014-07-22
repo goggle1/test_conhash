@@ -108,8 +108,8 @@ const struct node_s* conhash_lookup(struct conhash_s *conhash, const char *objec
     }
     /* calc hash value */
     hash = conhash->cb_hashfunc(object,len);
-	fprintf(stdout, "%s\n", object);
-	fprintf(stdout, "%ld\n", hash);
+	//fprintf(stdout, "%s\n", object);
+	//fprintf(stdout, "%ld\n", hash);
     
     rbnode = util_rbtree_lookup(&(conhash->vnode_tree), hash);
     if(rbnode != NULL)

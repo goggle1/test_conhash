@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#define MAX_LINE	1024
 #include "conhash/conhash.h"
 
 int main(int argc, char* argv[])
@@ -21,6 +22,7 @@ int main(int argc, char* argv[])
 		conhash_add_node(conhashp, nodep);
 	}
 
+#if 0
 	char* uri = "/videos/v/20110926/205763500/205763500/1/f3a89defde4e580e4058149e9059d1d4.ts";
 	int len = strlen(uri);
 	struct node_s* findp = conhash_lookup(conhashp, uri, len);
@@ -35,6 +37,26 @@ int main(int argc, char* argv[])
 	len = strlen(uri);
     findp = conhash_lookup(conhashp, uri, len);       
     fprintf(stdout, "find [%d][%s] by %s\n", findp->index, findp->iden, uri);
+#endif
+
+	char buf[MAX_LINE];
+	FILE *fp;
+	int len; 
+	if((fp = fopen("./ts.list","r")) == NULL)
+    {
+        perror("fail to read");
+        exit (1) ;
+    }
+
+    while(fgets(buf,MAX_LINE,fp) != NULL)
+    {
+        len = strlen(buf);
+        buf[len-1] = '\0'; 
+		struct node_s* findp = conhash_lookup(conhashp, buf, len-1);
+        fprintf(stdout, "%s,%s\n", buf, findp->iden);
+    }
+
+	fclose(fp);
     
 	return 0;
 }
